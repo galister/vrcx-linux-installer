@@ -89,10 +89,7 @@ fi
 if [[ -d $HOME/.local/share/applications ]]; then
 	if [[ -d $HOME/.local/share/icons ]]; then
 		echo "Install VRCX.png to ~/.local/share/icons"
-		while ! wget -qO ~/.local/share/icons/VRCX.png --show-progress https://github.com/vrcx-team/VRCX/blob/master/VRCX.png; do
-			echo "Failed to download icon, waiting 5s before retry."
-			sleep 5
-		done
+                cp "$WINEPREFIX/drive_c/vrcx/VRCX.png" "~/.local/share/icons/VRCX.png"
 	fi
 
 	echo "Install vrcx.desktop to ~/.local/share/applications"
