@@ -17,6 +17,11 @@ if [ "$1" != "force" ] && [[ $wine_version < 9.0 ]]; then
 	exit 1
 fi
 
+while pidof "VRCX.exe"; do
+    echo "Please close VRCX before continuing."
+    read -p "Press enter to continue"
+done
+
 if [[ ! -d $WINEPREFIX ]]; then
 	echo "Creating Wine prefix..."
 	logs=$(winecfg /v win10 2>&1)
