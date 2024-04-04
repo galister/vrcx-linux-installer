@@ -64,7 +64,7 @@ export WINEPREFIX=$HOME/.local/share/vrcx
 wine64 $WINEPREFIX/drive_c/vrcx/VRCX.exe -no-cef-sandbox' >~/.local/share/vrcx/drive_c/vrcx/vrcx
 chmod +x ~/.local/share/vrcx/drive_c/vrcx/vrcx
 
-if command -qv winetricks; then
+if command -V winetricks; then
         echo "Install corefonts"
 	winetricks corefonts
 else
