@@ -18,8 +18,8 @@ if [ "$1" != "force" ] && [[ $wine_version < 9.0 ]]; then
 fi
 
 while pidof "VRCX.exe"; do
-    echo "Please close VRCX before continuing."
-    read -p "Press enter to continue"
+    echo "Please close VRCX. The installation will continue afterwards."
+    sleep 5
 done
 
 if [[ ! -d $WINEPREFIX ]]; then
