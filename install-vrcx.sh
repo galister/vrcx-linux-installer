@@ -51,8 +51,9 @@ fi
 
 echo "Downloading VRCX..."
 
-mkdir -p $WINEPREFIX/drive_c/vrcx
-cd $WINEPREFIX/drive_c/vrcx
+vrcx_home=$WINEPREFIX/drive_c/vrcx
+mkdir -p $vrcx_home
+cd $vrcx_home
 
 while ! wget -qO vrcx.zip --show-progress $release_zip_url; do
         echo "Failed to download release, waiting 5s before retry."
@@ -65,8 +66,8 @@ rm vrcx.zip
 
 echo '#!/usr/bin/env bash 
 export WINEPREFIX=$HOME/.local/share/vrcx
-wine64 $WINEPREFIX/drive_c/vrcx/VRCX.exe -no-cef-sandbox' >~/.local/share/vrcx/drive_c/vrcx/vrcx
-chmod +x ~/.local/share/vrcx/drive_c/vrcx/vrcx
+wine64 $WINEPREFIX/drive_c/vrcx/VRCX.exe -no-cef-sandbox' > $vrcx_home/vrcx
+chmod +x $vrcx_home/vrcx
 
 if command -V winetricks; then
         echo "Installing corefonts... (this will take a minute)"
@@ -92,15 +93,15 @@ if [ "$winetricks_exit_code" -ne "0" ]; then
 	exit 1
 fi
 
-if [[ -d ~/.local/bin ]]; then
+if [[ -d "$HOME/.local/bin" ]]; then
 	echo "Installing vrcx to ~/.local/bin"
-	ln -s ~/.local/share/vrcx/drive_c/vrcx/vrcx ~/.local/bin/vrcx || true
+	ln -s "$vrcx_home/vrcx" "$HOME/.local/bin/vrcx" || true
 fi
 
-if [[ -d $HOME/.local/share/applications ]]; then
-	if [[ -d $HOME/.local/share/icons ]]; then
+if [[ -d "$HOME/.local/share/applications" ]]; then
+	if [[ -d "$HOME/.local/share/icons" ]]; then
 		echo "Installing VRCX.png to ~/.local/share/icons"
-                cp "$WINEPREFIX/drive_c/vrcx/VRCX.png" "~/.local/share/icons/VRCX.png"
+                cp "$vrcx_home/VRCX.png" "$HOME/.local/share/icons/VRCX.png"
 	fi
 
 	echo "Installing vrcx.desktop to ~/.local/share/applications"
@@ -108,9 +109,9 @@ if [[ -d $HOME/.local/share/applications ]]; then
 Type=Application
 Name=VRCX
 Categories=Utility;
-Exec=$HOME/.local/share/vrcx/drive_c/vrcx/vrcx
+Exec=$vrcx_home/vrcx
 Icon=VRCX
-" >~/.local/share/applications/vrcx.desktop
+" >"$HOME/.local/share/applications/vrcx.desktop"
 fi
 
 echo "Done! Check your menu for VRCX."
