@@ -64,6 +64,18 @@ export WINEPREFIX=$HOME/.local/share/vrcx
 wine64 $WINEPREFIX/drive_c/vrcx/VRCX.exe -no-cef-sandbox' >~/.local/share/vrcx/drive_c/vrcx/vrcx
 chmod +x ~/.local/share/vrcx/drive_c/vrcx/vrcx
 
+if command -qv winetricks; then
+        echo "Install corefonts"
+	winetricks corefonts
+else
+        echo "Download winetricks"
+        wget -q --show-progress https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks
+        chmod +x ./winetricks
+        echo "Install corefonts"
+        ./winetricks corefonts
+        rm ./winetricks
+fi
+
 if [[ -d ~/.local/bin ]]; then
 	echo "Install vrcx to ~/.local/bin"
 	ln -s ~/.local/share/vrcx/drive_c/vrcx/vrcx ~/.local/bin/vrcx || true
