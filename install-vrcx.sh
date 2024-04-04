@@ -7,6 +7,7 @@ export WINEPREFIX=$HOME/.local/share/vrcx
 
 release_zip_url=https://github.com/vrcx-team/VRCX/releases/download/v2024.03.23/VRCX_20240323.zip
 
+set -x
 set -e
 
 # Ensure Wine version >= 9.0
