@@ -7,7 +7,6 @@ export WINEPREFIX=$HOME/.local/share/vrcx
 
 release_zip_url=https://github.com/vrcx-team/VRCX/releases/download/v2024.03.23/VRCX_20240323.zip
 
-set -x
 set -e
 
 # Ensure Wine version >= 9.0
@@ -55,7 +54,10 @@ echo "Download VRCX"
 mkdir -p $WINEPREFIX/drive_c/vrcx
 cd $WINEPREFIX/drive_c/vrcx
 
-wget -qO vrcx.zip --show-progress $release_zip_url
+while ! wget -qO vrcx.zip --show-progress $release_zip_url; do
+        echo "Failed to download release, waiting 5s before retry."
+        sleep 5
+done
 unzip -uq vrcx.zip
 rm vrcx.zip
 
@@ -69,7 +71,10 @@ if command -V winetricks; then
 	winetricks corefonts
 else
         echo "Download winetricks"
-        wget -qO winetricks --show-progress https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks
+        while ! wget -qO winetricks --show-progress https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks; do
+		echo "Failed to download winetricks, waiting 5s before retry."
+		sleep 5
+        done
         chmod +x ./winetricks
         echo "Install corefonts"
         ./winetricks corefonts
@@ -84,7 +89,10 @@ fi
 if [[ -d $HOME/.local/share/applications ]]; then
 	if [[ -d $HOME/.local/share/icons ]]; then
 		echo "Install VRCX.png to ~/.local/share/icons"
-		wget -qO ~/.local/share/icons/VRCX.png --show-progress https://github.com/vrcx-team/VRCX/blob/master/VRCX.png
+		while ! wget -qO ~/.local/share/icons/VRCX.png --show-progress https://github.com/vrcx-team/VRCX/blob/master/VRCX.png; do
+			echo "Failed to download icon, waiting 5s before retry."
+			sleep 5
+		done
 	fi
 
 	echo "Install vrcx.desktop to ~/.local/share/applications"
