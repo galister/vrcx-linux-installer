@@ -58,6 +58,8 @@ while ! wget -qO vrcx.zip --show-progress $release_zip_url; do
         echo "Failed to download release, waiting 5s before retry."
         sleep 5
 done
+
+echo "Extracting VRCX..."
 unzip -uq vrcx.zip
 rm vrcx.zip
 
