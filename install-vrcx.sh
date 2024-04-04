@@ -18,7 +18,7 @@ if [ "$1" != "force" ] && [[ $wine_version < 9.0 ]]; then
 fi
 
 if [[ ! -d $WINEPREFIX ]]; then
-	echo "Creating Wine prefix."
+	echo "Creating Wine prefix..."
 	logs=$(winecfg /v win10 2>&1)
 	if [ "$?" -ne "0" ]; then
 		echo "*********** Error while creating Wine prefix ***********"
@@ -37,19 +37,19 @@ vrc_appdata=$steamapps/438100/pfx/drive_c/users/steamuser/AppData/LocalLow/VRCha
 vrc_dst=$WINEPREFIX/drive_c/users/$USER/AppData/LocalLow/VRChat/VRChat
 
 if [[ -d $vrc_appdata ]]; then
-	echo "No VRC installation detected."
+	echo "No VRC installation detected!"
 	echo "If you want to use VRC on this computer, please install it now and start it once."
 	echo "Otherwise, your Game Log tab will not function!"
 	read -p "Press enter to continue"
 fi
 
 if [[ -d $vrc_appdata ]] && [[ ! -d $vrc_dst ]]; then
-	echo "Link VRChat AppData into Wine Prefix"
+	echo "Linking VRChat AppData into Wine Prefix..."
 	mkdir -p $(dirname $vrc_dst)
 	ln -s $vrc_appdata $vrc_dst
 fi
 
-echo "Download VRCX"
+echo "Downloading VRCX..."
 
 mkdir -p $WINEPREFIX/drive_c/vrcx
 cd $WINEPREFIX/drive_c/vrcx
@@ -67,32 +67,41 @@ wine64 $WINEPREFIX/drive_c/vrcx/VRCX.exe -no-cef-sandbox' >~/.local/share/vrcx/d
 chmod +x ~/.local/share/vrcx/drive_c/vrcx/vrcx
 
 if command -V winetricks; then
-        echo "Install corefonts"
-	winetricks corefonts
+        echo "Installing corefonts... (this will take a minute)"
+ 	logs=$(winetricks corefonts 2>&1)
+        winetricks_exit_code="$?"
 else
-        echo "Download winetricks"
+        echo "Downloading winetricks..."
         while ! wget -qO winetricks --show-progress https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks; do
 		echo "Failed to download winetricks, waiting 5s before retry."
 		sleep 5
         done
         chmod +x ./winetricks
-        echo "Install corefonts"
-        ./winetricks corefonts
+        echo "Installing corefonts... (this will take a minute)"
+ 	logs=$(./winetricks corefonts 2>&1)
+        winetricks_exit_code="$?"
         rm ./winetricks
 fi
 
+if [ "$winetricks_exit_code" -ne "0" ]; then
+	echo "*********** Error while installing corefonts ***********"
+	echo "$logs"
+	echo "*********** Error while installing corefonts ***********"
+	exit 1
+fi
+
 if [[ -d ~/.local/bin ]]; then
-	echo "Install vrcx to ~/.local/bin"
+	echo "Installing vrcx to ~/.local/bin"
 	ln -s ~/.local/share/vrcx/drive_c/vrcx/vrcx ~/.local/bin/vrcx || true
 fi
 
 if [[ -d $HOME/.local/share/applications ]]; then
 	if [[ -d $HOME/.local/share/icons ]]; then
-		echo "Install VRCX.png to ~/.local/share/icons"
+		echo "Installing VRCX.png to ~/.local/share/icons"
                 cp "$WINEPREFIX/drive_c/vrcx/VRCX.png" "~/.local/share/icons/VRCX.png"
 	fi
 
-	echo "Install vrcx.desktop to ~/.local/share/applications"
+	echo "Installing vrcx.desktop to ~/.local/share/applications"
 	echo "[Desktop Entry]
 Type=Application
 Name=VRCX
