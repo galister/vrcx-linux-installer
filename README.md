@@ -10,6 +10,7 @@ What the script does:
 1. Create a prefix at `~/.local/share/vrcx`
 1. (Optional) Link VRChat AppData folder into prefix to enable the "Game Log" tab
 1. Install VRCX into `~/.local/share/vrcx/drive_c/vrcx`
+1. Run `winetricks corefonts` (downloads `winetricks` if not available)
 1. Create launcher script, desktop entry and icon.
 
 Before running the script:
