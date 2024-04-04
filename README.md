@@ -21,7 +21,7 @@ Before running the script:
 
 Here's the one-liner. Please review the contents before executing.
 ```bash
-curl -sSf https://github.com/galister/vrcx-linux-installer/blob/master/install-vrcx.sh | bash
+curl -sSf https://raw.githubusercontent.com/galister/vrcx-linux-installer/master/install-vrcx.sh | bash
 ```
 
 ## Join the Linux VR Community
