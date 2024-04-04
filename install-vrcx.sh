@@ -55,10 +55,9 @@ echo "Download VRCX"
 mkdir -p $WINEPREFIX/drive_c/vrcx
 cd $WINEPREFIX/drive_c/vrcx
 
-wget -q --show-progress $release_zip_url
-filename=$(basename $release_zip_url)
-unzip -uq $filename
-rm $filename
+wget -qO vrcx.zip --show-progress $release_zip_url
+unzip -uq vrcx.zip
+rm vrcx.zip
 
 echo '#!/usr/bin/env bash 
 export WINEPREFIX=$HOME/.local/share/vrcx
@@ -70,7 +69,7 @@ if command -qv winetricks; then
 	winetricks corefonts
 else
         echo "Download winetricks"
-        wget -q --show-progress https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks
+        wget -qO winetricks --show-progress https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks
         chmod +x ./winetricks
         echo "Install corefonts"
         ./winetricks corefonts
@@ -85,8 +84,7 @@ fi
 if [[ -d $HOME/.local/share/applications ]]; then
 	if [[ -d $HOME/.local/share/icons ]]; then
 		echo "Install VRCX.png to ~/.local/share/icons"
-		cd ~/.local/share/icons/
-		wget -q --show-progress https://github.com/vrcx-team/VRCX/blob/master/VRCX.png
+		wget -qO ~/.local/share/icons/VRCX.png --show-progress https://github.com/vrcx-team/VRCX/blob/master/VRCX.png
 	fi
 
 	echo "Install vrcx.desktop to ~/.local/share/applications"
