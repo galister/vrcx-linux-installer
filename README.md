@@ -1,3 +1,9 @@
+# Please use the script from upstream
+
+https://github.com/vrcx-team/VRCX/blob/master/Linux/install-vrcx.sh
+
+## Original readme below
+
 This is an easy-to-use installer for Linux. It installs a known working release from [VRCX Official Releases](https://github.com/vrcx-team/VRCX/releases) under Wine 9+.
 
 **Wine 9** is now required!
